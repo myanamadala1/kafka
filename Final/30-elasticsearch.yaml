@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: elasticsearch-network-policy
+  spec:
+    podSelector:
+      matchLabels:
+        app: elasticsearch
+    ingress:
+    - {}
+- apiVersion: policy/v1beta1
+  kind: PodDisruptionBudget
+  metadata:
+    name: elasticsearch
+    labels:
+      app: elasticsearch
+  spec:
+    selector:
+      matchLabels:
+        app: elasticsearch
+    maxUnavailable: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: elasticsearch
+    name: elasticsearch
+  spec:
+    ports:
+    - name: client
+      port: 9200
+      protocol: TCP
+      targetPort: client
+    selector:
+      app: elasticsearch
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: elasticsearch
+    name: elasticsearch-headless
+  spec:
+    clusterIP: None
+    ports:
+    - name: client
+      port: 9200
+      protocol: TCP
+      targetPort: client
+    - name: server
+      port: 9300
+      protocol: TCP
+      targetPort: server
+    selector:
+      app: elasticsearch
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    labels:
+      app: elasticsearch
+    name: elasticsearch
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    selector:
+      matchLabels:
+        app: elasticsearch
+    serviceName: elasticsearch-headless
+    template:
+      metadata:
+        labels:
+          app: elasticsearch
+      spec:
+        containers:
+        - name: elasticsearch
+          image: reg-dhc-americas.app.corpintra.net/myanama/elasticsearch-oss:6.6.1
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: discovery.type
+            value: "single-node"
+          ports:
+          - containerPort: 9200
+            name: client
+            protocol: TCP
+          - containerPort: 9300
+            name: server
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/elasticsearch
+            name: data
+        dnsPolicy: ClusterFirst
+        securityContext:
+          fsGroup: 1000
+          runAsUser: 1000
+        terminationGracePeriodSeconds: 1800
+    updateStrategy:
+      type: OnDelete
+    volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

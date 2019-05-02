@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nifi-ingress
+  annotations:
+    traefik.frontend.rule.type: PathPrefix
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    nginx.ingress.kubernetes.io/affinity: cookie
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /garagetest/nifi-0/kafka/in
+        backend:
+          serviceName: nifi
+          servicePort: rest

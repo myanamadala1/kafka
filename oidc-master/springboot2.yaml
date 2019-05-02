@@ -1,0 +1,78 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: springboot2-deployment
+  namespace: deveapp1
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: springboot2-app
+    spec:
+      containers:
+      - name: springboot2-container
+        image: "reg-dhc-americas.app.corpintra.net/nggarage/springboot-oidc:2.1.2-v6"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      securityContext:
+        fsGroup: 9999
+        runAsUser: 1000
+        supplementalGroups:
+        - 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot2-service
+  namespace: deveapp1
+  annotations:
+    #traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: "traefikcookie"
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: springboot2-app
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+  name: springboot2-networkpolicy
+  namespace: deveapp1
+spec:
+  podSelector:
+    matchLabels:
+      app: springboot2-app
+  ingress:
+    - ports:
+      - port: 8080
+        protocol: TCP
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: ingress
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: springboot2-ingress
+  namespace: deveapp1
+  annotations:
+    #traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: "traefikcookie"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /sb2
+        backend:
+          serviceName: springboot2-service
+          servicePort: 80

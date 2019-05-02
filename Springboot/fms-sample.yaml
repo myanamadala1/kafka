@@ -1,0 +1,69 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fmstest-eai-deployment
+  namespace: fmstest
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: fmstest-eai-app
+    spec:
+      containers:
+      - name: fmstest-eai-container
+        image: "reg-dhc.app.corpintra.net/choudhk/fms-eai-service:2018.12.12.004"
+        ports:
+        - containerPort: 9097
+      securityContext:
+        fsGroup: 9999
+        runAsUser: 1000
+        supplementalGroups:
+        - 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fmstest-eai-service
+  namespace: fmstest
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9097
+  selector:
+    app: fmstest-eai-app
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+  name: fmstest-eai-networkpolicy
+  namespace: fmstest
+spec:
+  podSelector:
+    matchLabels:
+      app: fmstest-eai-app
+  ingress:
+    - ports:
+      - port: 9097
+        protocol: TCP
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: ingress
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fmstest-eai-ingress
+  namespace: fmstest
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/eai
+        backend:
+          serviceName: fmstest-eai-service
+          servicePort: 80

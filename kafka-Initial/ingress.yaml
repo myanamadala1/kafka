@@ -1,0 +1,780 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: dhc-restricted
+    creationTimestamp: "2019-03-01T18:45:05Z"
+    generateName: traefik-ingress-controller-6b445966f9-
+    labels:
+      name: traefik-ingress-lb
+      pod-template-hash: "2600152295"
+    name: traefik-ingress-controller-6b445966f9-5dcwh
+    namespace: ingress
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: traefik-ingress-controller-6b445966f9
+      uid: f1dedc88-30ae-11e9-b70a-fa163e4ff25e
+    resourceVersion: "11249214"
+    selfLink: /api/v1/namespaces/ingress/pods/traefik-ingress-controller-6b445966f9-5dcwh
+    uid: 21052b2c-3c52-11e9-984c-fa163ef36fb5
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - traefik-ingress-lb
+          topologyKey: kubernetes.io/hostname
+    containers:
+    - args:
+      - --api
+      - --ping
+      - --ping.entrypoint=http
+      - --metrics
+      - --metrics.prometheus
+      - --metrics.prometheus.entrypoint=http
+      - --entryPoints=Name:http Address::8000
+      - --accessLog
+      - --accessLog.format="json"
+      - --traefikLog.format="json"
+      - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: traefik-ingress-lb
+      ports:
+      - containerPort: 8080
+        name: traefik-mgmt
+        protocol: TCP
+      - containerPort: 8000
+        name: traefik-ingress
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsUser: 1000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: traefik-ingress-controller-token-d8zxb
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    nodeName: c04p011-kube-node01
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1
+      runAsNonRoot: true
+      supplementalGroups:
+      - 1
+    serviceAccount: traefik-ingress-controller
+    serviceAccountName: traefik-ingress-controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: traefik-ingress-controller-token-d8zxb
+      secret:
+        defaultMode: 420
+        secretName: traefik-ingress-controller-token-d8zxb
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T18:45:05Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T18:45:08Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T18:45:05Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://0ac785bb62d90bb64ec207833bfb9ee1d0ef8d8ba630db564a9e82f64e0bc509
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imageID: docker-pullable://reg-dhc.app.corpintra.net/example/traefik@sha256:8b593b011469996b2c82cef9efcf8c2368313ea1ad1ac1bacbd4292f77e27e04
+      lastState: {}
+      name: traefik-ingress-lb
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: "2019-03-01T18:45:06Z"
+    hostIP: 10.6.0.4
+    phase: Running
+    podIP: 10.6.4.35
+    qosClass: BestEffort
+    startTime: "2019-03-01T18:45:05Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: dhc-privileged
+    creationTimestamp: "2019-02-22T09:42:53Z"
+    generateName: traefik-ingress-controller-6b445966f9-
+    labels:
+      name: traefik-ingress-lb
+      pod-template-hash: "2600152295"
+    name: traefik-ingress-controller-6b445966f9-nv99z
+    namespace: ingress
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: traefik-ingress-controller-6b445966f9
+      uid: f1dedc88-30ae-11e9-b70a-fa163e4ff25e
+    resourceVersion: "11236654"
+    selfLink: /api/v1/namespaces/ingress/pods/traefik-ingress-controller-6b445966f9-nv99z
+    uid: 39cc62e4-3686-11e9-984c-fa163ef36fb5
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - traefik-ingress-lb
+          topologyKey: kubernetes.io/hostname
+    containers:
+    - args:
+      - --api
+      - --ping
+      - --ping.entrypoint=http
+      - --metrics
+      - --metrics.prometheus
+      - --metrics.prometheus.entrypoint=http
+      - --entryPoints=Name:http Address::8000
+      - --accessLog
+      - --accessLog.format="json"
+      - --traefikLog.format="json"
+      - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: traefik-ingress-lb
+      ports:
+      - containerPort: 8080
+        name: traefik-mgmt
+        protocol: TCP
+      - containerPort: 8000
+        name: traefik-ingress
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsUser: 1000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: traefik-ingress-controller-token-d8zxb
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    nodeName: c04p011-kube-node01
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: true
+    serviceAccount: traefik-ingress-controller
+    serviceAccountName: traefik-ingress-controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: traefik-ingress-controller-token-d8zxb
+      secret:
+        defaultMode: 420
+        secretName: traefik-ingress-controller-token-d8zxb
+  status:
+    message: 'The node was low on resource: memory. Container traefik-ingress-lb was
+      using 26787460Ki, which exceeds its request of 0. '
+    phase: Failed
+    reason: Evicted
+    startTime: "2019-02-22T09:42:53Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: dhc-privileged
+    creationTimestamp: "2019-02-22T09:31:33Z"
+    generateName: traefik-ingress-controller-6b445966f9-
+    labels:
+      name: traefik-ingress-lb
+      pod-template-hash: "2600152295"
+    name: traefik-ingress-controller-6b445966f9-x6dkw
+    namespace: ingress
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: traefik-ingress-controller-6b445966f9
+      uid: f1dedc88-30ae-11e9-b70a-fa163e4ff25e
+    resourceVersion: "11249175"
+    selfLink: /api/v1/namespaces/ingress/pods/traefik-ingress-controller-6b445966f9-x6dkw
+    uid: a4bcd3cb-3684-11e9-984c-fa163ef36fb5
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - traefik-ingress-lb
+          topologyKey: kubernetes.io/hostname
+    containers:
+    - args:
+      - --api
+      - --ping
+      - --ping.entrypoint=http
+      - --metrics
+      - --metrics.prometheus
+      - --metrics.prometheus.entrypoint=http
+      - --entryPoints=Name:http Address::8000
+      - --accessLog
+      - --accessLog.format="json"
+      - --traefikLog.format="json"
+      - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: traefik-ingress-lb
+      ports:
+      - containerPort: 8080
+        name: traefik-mgmt
+        protocol: TCP
+      - containerPort: 8000
+        name: traefik-ingress
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsUser: 1000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: traefik-ingress-controller-token-d8zxb
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    nodeName: c04p011-kube-node02
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: true
+    serviceAccount: traefik-ingress-controller
+    serviceAccountName: traefik-ingress-controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: traefik-ingress-controller-token-d8zxb
+      secret:
+        defaultMode: 420
+        secretName: traefik-ingress-controller-token-d8zxb
+  status:
+    message: 'The node was low on resource: memory. Container traefik-ingress-lb was
+      using 32033664Ki, which exceeds its request of 0. '
+    phase: Failed
+    reason: Evicted
+    startTime: "2019-02-22T09:31:34Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: dhc-restricted
+    creationTimestamp: "2019-03-01T17:30:20Z"
+    generateName: traefik-ingress-controller-6b445966f9-
+    labels:
+      name: traefik-ingress-lb
+      pod-template-hash: "2600152295"
+    name: traefik-ingress-controller-6b445966f9-zsfj4
+    namespace: ingress
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: traefik-ingress-controller-6b445966f9
+      uid: f1dedc88-30ae-11e9-b70a-fa163e4ff25e
+    resourceVersion: "11236837"
+    selfLink: /api/v1/namespaces/ingress/pods/traefik-ingress-controller-6b445966f9-zsfj4
+    uid: afc1a5e1-3c47-11e9-984c-fa163ef36fb5
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - traefik-ingress-lb
+          topologyKey: kubernetes.io/hostname
+    containers:
+    - args:
+      - --api
+      - --ping
+      - --ping.entrypoint=http
+      - --metrics
+      - --metrics.prometheus
+      - --metrics.prometheus.entrypoint=http
+      - --entryPoints=Name:http Address::8000
+      - --accessLog
+      - --accessLog.format="json"
+      - --traefikLog.format="json"
+      - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: traefik-ingress-lb
+      ports:
+      - containerPort: 8080
+        name: traefik-mgmt
+        protocol: TCP
+      - containerPort: 8000
+        name: traefik-ingress
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: ping
+          port: 8000
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsUser: 1000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: traefik-ingress-controller-token-d8zxb
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    nodeName: c04p011-kube-node04
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1
+      runAsNonRoot: true
+      supplementalGroups:
+      - 1
+    serviceAccount: traefik-ingress-controller
+    serviceAccountName: traefik-ingress-controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: traefik-ingress-controller-token-d8zxb
+      secret:
+        defaultMode: 420
+        secretName: traefik-ingress-controller-token-d8zxb
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T17:30:20Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T17:31:17Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2019-03-01T17:30:20Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://a5660db75350f41d17099320bef1f6eeffc2f425837f216f6e74ebb3b91f825a
+      image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+      imageID: docker-pullable://reg-dhc.app.corpintra.net/example/traefik@sha256:8b593b011469996b2c82cef9efcf8c2368313ea1ad1ac1bacbd4292f77e27e04
+      lastState: {}
+      name: traefik-ingress-lb
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: "2019-03-01T17:31:08Z"
+    hostIP: 10.6.0.8
+    phase: Running
+    podIP: 10.6.8.30
+    qosClass: BestEffort
+    startTime: "2019-03-01T17:30:20Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2019-02-14T23:19:15Z"
+    name: traefik-ingress-service
+    namespace: ingress
+    resourceVersion: "8889333"
+    selfLink: /api/v1/namespaces/ingress/services/traefik-ingress-service
+    uid: f1f632e3-30ae-11e9-b70a-fa163e4ff25e
+  spec:
+    clusterIP: 10.254.128.29
+    externalTrafficPolicy: Cluster
+    ports:
+    - nodePort: 30000
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+    selector:
+      name: traefik-ingress-lb
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2019-02-14T23:19:15Z"
+    name: traefik-management
+    namespace: ingress
+    resourceVersion: "8889320"
+    selfLink: /api/v1/namespaces/ingress/services/traefik-management
+    uid: f1e774d4-30ae-11e9-b70a-fa163e4ff25e
+  spec:
+    clusterIP: 10.254.248.176
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      name: traefik-ingress-lb
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2019-02-14T23:19:15Z"
+    generation: 1
+    labels:
+      name: traefik-ingress-lb
+    name: traefik-ingress-controller
+    namespace: ingress
+    resourceVersion: "11249218"
+    selfLink: /apis/apps/v1/namespaces/ingress/deployments/traefik-ingress-controller
+    uid: f1de0a48-30ae-11e9-b70a-fa163e4ff25e
+  spec:
+    progressDeadlineSeconds: 2147483647
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        name: traefik-ingress-lb
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: traefik-ingress-lb
+      spec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                  - traefik-ingress-lb
+              topologyKey: kubernetes.io/hostname
+        containers:
+        - args:
+          - --api
+          - --ping
+          - --ping.entrypoint=http
+          - --metrics
+          - --metrics.prometheus
+          - --metrics.prometheus.entrypoint=http
+          - --entryPoints=Name:http Address::8000
+          - --accessLog
+          - --accessLog.format="json"
+          - --traefikLog.format="json"
+          - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+          image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ping
+              port: 8000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: traefik-ingress-lb
+          ports:
+          - containerPort: 8080
+            name: traefik-mgmt
+            protocol: TCP
+          - containerPort: 8000
+            name: traefik-ingress
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ping
+              port: 8000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+        serviceAccount: traefik-ingress-controller
+        serviceAccountName: traefik-ingress-controller
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2019-02-14T23:19:55Z"
+      lastUpdateTime: "2019-02-14T23:19:55Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2019-02-14T23:19:15Z"
+    generation: 1
+    labels:
+      name: traefik-ingress-lb
+      pod-template-hash: "2600152295"
+    name: traefik-ingress-controller-6b445966f9
+    namespace: ingress
+    ownerReferences:
+    - apiVersion: extensions/v1beta1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: traefik-ingress-controller
+      uid: f1de0a48-30ae-11e9-b70a-fa163e4ff25e
+    resourceVersion: "11249217"
+    selfLink: /apis/apps/v1/namespaces/ingress/replicasets/traefik-ingress-controller-6b445966f9
+    uid: f1dedc88-30ae-11e9-b70a-fa163e4ff25e
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        name: traefik-ingress-lb
+        pod-template-hash: "2600152295"
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: traefik-ingress-lb
+          pod-template-hash: "2600152295"
+      spec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                  - traefik-ingress-lb
+              topologyKey: kubernetes.io/hostname
+        containers:
+        - args:
+          - --api
+          - --ping
+          - --ping.entrypoint=http
+          - --metrics
+          - --metrics.prometheus
+          - --metrics.prometheus.entrypoint=http
+          - --entryPoints=Name:http Address::8000
+          - --accessLog
+          - --accessLog.format="json"
+          - --traefikLog.format="json"
+          - --kubernetes.namespaces=ingress,garagetest,aaron,qaeapp1,uateapp1,qaeapp2,uateapp2,deveapp1,deveapp2,i3,qakafka1,uatkafka1,qaredis,uatredis
+          image: reg-dhc.app.corpintra.net/example/traefik:v1.7.4-alpine
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ping
+              port: 8000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: traefik-ingress-lb
+          ports:
+          - containerPort: 8080
+            name: traefik-mgmt
+            protocol: TCP
+          - containerPort: 8000
+            name: traefik-ingress
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: ping
+              port: 8000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+        serviceAccount: traefik-ingress-controller
+        serviceAccountName: traefik-ingress-controller
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    fullyLabeledReplicas: 2
+    observedGeneration: 1
+    readyReplicas: 2
+    replicas: 2
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

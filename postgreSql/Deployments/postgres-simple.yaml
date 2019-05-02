@@ -1,0 +1,66 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: postgresql-simple
+  labels:
+    app: postgresql-simple
+    cluster-name: postgresql-cluster
+spec:
+  replicas: 1
+  serviceName: postgresql-simple
+  selector:
+    matchLabels:
+      app: postgresql-simple
+      cluster-name: postgresql-cluster
+  template:
+    metadata:
+      labels:
+        app: postgresql-simple
+        cluster-name: postgresql-cluster
+        zone: db
+    spec:
+      containers:
+      - name: database
+        image: reg-dhc.app.corpintra.net/i3/postgresql:10.3-2.1.0
+        imagePullPolicy: Always
+        env:
+        - name: PGSSL
+          value: "YES"
+        - name: PGDATABASE
+          value: "testdb"
+        - name: PGDBADM
+          value: "pgdbadm"
+        - name: PGDBADMPW
+          value: "pgdbadmpw"
+        - name: PGBACKUPUSER
+          value: "pgbackupuser"
+        - name: PGBACKUPUSERPW
+          value: "pgbackupuserpw"
+        - name: PATRONIUSERPW
+          value: "patroni"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: KUBERNETES_LABELS
+          value: '{app: postgresql-simple, cluster-name: postgresql-cluster}'
+        - name: CLUSTER_SCOPE
+          value: postgresql-cluster
+        ports:
+          - containerPort: 8008
+            protocol: TCP
+          - containerPort: 64000
+            protocol: TCP
+        volumeMounts:
+          - name: postgresql-simple
+            mountPath: "/srv/postgresql/volume"
+      securityContext:
+        fsGroup: 987
+      volumes:
+      - name: postgresql-simple
+        emptyDir: {}
+       

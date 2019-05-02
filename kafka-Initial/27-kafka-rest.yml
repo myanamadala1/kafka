@@ -1,0 +1,156 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: kafka-rest-network-policy
+  spec:
+    podSelector:
+      matchLabels:
+        app: kafka-rest
+    ingress:
+    - {}
+- apiVersion: policy/v1beta1
+  kind: PodDisruptionBudget
+  metadata:
+    name: kafka-rest
+    labels:
+      app: kafka-rest
+  spec:
+    selector:
+      matchLabels:
+        app: kafka-rest
+    maxUnavailable: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: kafka-rest-external
+  spec:
+    ports:
+    - port: 8082
+      protocol: TCP
+      targetPort: 8082
+      name: client
+    - port: 8085
+      protocol: TCP
+      targetPort: 8085
+      name: ssl
+    selector:
+      app: kafka-rest
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      ingress.kubernetes.io/content-type-nosniff: "true"
+      traefik.ingress.kubernetes.io/affinity: "true"
+      traefik.ingress.kubernetes.io/session-cookie-name: traefikcookie
+    labels:
+      app: kafka-rest
+    name: kafka-rest
+  spec:
+    ports:
+    - name: client
+      port: 80
+      protocol: TCP
+      targetPort: client
+    - name: ssl-client
+      port: 443
+      protocol: TCP
+      targetPort: ssl-client
+    selector:
+      app: kafka-rest
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: kafka-rest
+    name: kafka-rest-headless
+  spec:
+    clusterIP: None
+    ports:
+    - name: client
+      port: 8082
+      protocol: TCP
+      targetPort: client
+    - name: ssl-client
+      port: 8085
+      protocol: TCP
+      targetPort: ssl-client
+    selector:
+      app: kafka-rest
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    labels:
+      app: kafka-rest
+    name: kafka-rest
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    selector:
+      matchLabels:
+        app: kafka-rest
+    serviceName: kafka-rest-headless
+    template:
+      metadata:
+        labels:
+          app: kafka-rest
+      spec:
+        containers:
+        - command:
+          - sh
+          - -exc
+          - |
+            unset KAFKA_REST_PORT && \
+            export KAFKA_REST_ID="1" && \
+            exec /etc/confluent/docker/run
+          name: kafka-rest
+          image: reg-dhc-americas.app.corpintra.net/myanama/kafka-rest:2.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: KAFKA_REST_PRODUCER_THREADS
+            value: "10"
+          - name: KAFKA_REST_CONSUMER_THREADS
+            value: "10"
+          - name: KAFKA_REST_ZOOKEEPER_CONNECT
+            value: "zookeeper-headless:2181"
+          - name: KAFKA_REST_CONSUMER_REQUEST_TIMEOUT_MS
+            value: "10000"
+          - name: KAFKA_REST_LISTENERS
+            value: "http://0.0.0.0:8082,https://0.0.0.0:8085"
+          - name: KAFKA_REST_HOST_NAME
+            value: "localhost"
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: "PLAINTEXT://kafka-headless:29092"
+          ports:
+          - containerPort: 8082
+            name: client
+            protocol: TCP
+          - containerPort: 8085
+            name: ssl-client
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/kafka-rest
+            name: data
+        dnsPolicy: ClusterFirst
+        securityContext:
+          fsGroup: 1000
+          runAsUser: 1000
+        terminationGracePeriodSeconds: 1800
+    updateStrategy:
+      type: OnDelete
+    volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

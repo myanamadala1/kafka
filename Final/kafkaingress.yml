@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kafka-rest-ingress
+  annotations:
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: traefikkafkacookie
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /consumers
+        backend:
+          serviceName: my-confluent-oss-cp-kafka-rest
+          servicePort: 8082
+      - path: /topics
+        backend:
+          serviceName: my-confluent-oss-cp-kafka-rest
+          servicePort: 8082

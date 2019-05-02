@@ -1,0 +1,78 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: garagetest-webui-deployment
+  namespace: garagetest
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: garagetest-webui-app
+    spec:
+      containers:
+      - name: garagetest-webui-container
+        image: "reg-dhc-americas.app.corpintra.net/nggarage/springboot-oidc:1.5.19-v1"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      securityContext:
+        fsGroup: 9999
+        runAsUser: 1000
+        supplementalGroups:
+        - 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: garagetest-webui-service
+  namespace: garagetest
+  annotations:
+    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: "traefikcookie"
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: garagetest-webui-app
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+  name: garagetest-webui-networkpolicy
+  namespace: garagetest
+spec:
+  podSelector:
+    matchLabels:
+      app: garagetest-webui-app
+  ingress:
+    - ports:
+      - port: 8080
+        protocol: TCP
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: ingress
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: garagetest-webui-ingress
+  namespace: garagetest
+  annotations:
+    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+    ingress.kubernetes.io/content-type-nosniff: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: "traefikcookie"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /sb1
+        backend:
+          serviceName: garagetest-webui-service
+          servicePort: 80
