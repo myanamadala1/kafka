@@ -12,9 +12,9 @@ spec:
       paths:
       - path: /consumers
         backend:
-          serviceName: my-confluent-oss-cp-kafka-rest
+          serviceName: confluent-cp-kafka-rest
           servicePort: 8082
       - path: /topics
         backend:
-          serviceName: my-confluent-oss-cp-kafka-rest
+          serviceName: confluent-cp-kafka-rest
           servicePort: 8082
