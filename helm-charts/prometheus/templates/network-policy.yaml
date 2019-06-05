@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "prometheus.name" . }}-network-policy
+  labels:
+    app: {{ template "prometheus.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "prometheus.name" . }}
+      release: {{ .Release.Name }}
+  ingress:
+  - {}
