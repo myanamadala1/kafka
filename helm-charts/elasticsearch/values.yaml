@@ -32,8 +32,8 @@ podSecurityPolicy:
     # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
 
 image:
-  repository: "docker.elastic.co/elasticsearch/elasticsearch-oss"
-  tag: "6.7.0"
+  repository: "reg-dhc-americas.app.corpintra.net/myanama/elasticsearch-oss"
+  tag: "6.6.1"
   pullPolicy: "IfNotPresent"
   # If specified, use these secrets to access the image
   # pullSecrets:

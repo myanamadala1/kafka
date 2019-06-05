@@ -1,5 +1,5 @@
 image:
-  repository: "docker.elastic.co/kibana/kibana-oss"
+  repository: "reg-dhc-americas.app.corpintra.net/myanama/kibana-oss"
   tag: "6.6.1"
   pullPolicy: "IfNotPresent"
 
