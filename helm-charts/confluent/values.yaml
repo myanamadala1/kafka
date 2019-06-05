@@ -153,7 +153,7 @@ cp-kafka-connect:
 cp-ksql-server:
   enabled: true
   image: reg-dhc-americas.app.corpintra.net/myanama/cp-ksql-server
-  imageTag: 5.2.1
+  imageTag: 5.2.1-no-root
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
