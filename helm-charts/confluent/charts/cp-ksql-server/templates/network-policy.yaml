@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "cp-ksql-server.fullname" . }}
+  labels:
+    app: {{ template "cp-ksql-server.name" . }}
+    chart: {{ template "cp-ksql-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "cp-ksql-server.name" . }}
+      release: {{ .Release.Name }}
+  ingress:
+  - {}

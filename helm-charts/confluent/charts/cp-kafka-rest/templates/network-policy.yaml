@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "cp-kafka-rest.name" . }}
+      release: {{ .Release.Name }}
+  ingress:
+  - {}
