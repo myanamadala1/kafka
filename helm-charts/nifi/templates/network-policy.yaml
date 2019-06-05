@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "apache-nifi.fullname" . }}
+  labels:
+    app: {{ template "apache-nifi.name" . }}
+    chart: {{ template "apache-nifi.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "apache-nifi.name" . }}
+      release: {{ .Release.Name }}
+  ingress:
+  - {}
