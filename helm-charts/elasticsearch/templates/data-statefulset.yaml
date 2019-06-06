@@ -29,6 +29,7 @@ spec:
 {{- end }}
       securityContext:
         fsGroup: 1000
+        runAsUser: 1000
       {{- if or .Values.data.antiAffinity .Values.data.nodeAffinity }}
       affinity:
       {{- end }}
