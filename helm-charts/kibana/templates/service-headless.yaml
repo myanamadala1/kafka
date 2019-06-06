@@ -3,8 +3,9 @@ kind: Service
 metadata:
   labels:
     app: kibana
-  name: kibana
+  name: kibana-headless
 spec:
+  clusterIP: None
   ports:
   - name: client
     port: 5601

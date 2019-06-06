@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: nifi
+  name: nifi
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nifi
+  serviceName: nifi-headless
+  template:
+    metadata:
+      labels:
+        app: nifi
+    spec:
+      containers:
+      - name: nifi
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NIFI_WEB_HTTP_HOST
+          value: "localhost"
+        - name: NIFI_WEB_HTTP_PORT
+          value: "8080"
+        image: reg-dhc-americas.app.corpintra.net/myanama/nifi:1.8.0
+        imagePullPolicy: IfNotPresent       
+        ports:
+        - containerPort: 8080
+          name: ui
+          protocol: TCP
+        - containerPort: 9090
+          name: rest
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /opt/data
+          name: datadir
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - emptyDir: {}
+        name: datadir
+  updateStrategy:
+    type: OnDelete

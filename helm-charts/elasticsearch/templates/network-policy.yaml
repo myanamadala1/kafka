@@ -1,16 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  labels:
-    app: {{ template "elasticsearch.name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-  name: {{ template "elasticsearch.fullname" . }}-network-policy
+  name: elasticsearch-network-policy
 spec:
   podSelector:
     matchLabels:
-      app: {{ template "elasticsearch.name" . }}
-      release: {{ .Release.Name }}
+      app: elasticsearch
   ingress:
   - {}

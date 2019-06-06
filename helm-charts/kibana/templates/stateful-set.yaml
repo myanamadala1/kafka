@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  serviceName: kibana-headless
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: reg-dhc-americas.app.corpintra.net/myanama/kibana-oss:6.6.1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ELASTICSEARCH_HOSTS
+          value: "http://elasticsearch-headless:9200"
+        - name: SERVER_NAME
+          value: "ng-garage-nafta-qa.app.corpintra.net"
+        ports:
+        - containerPort: 5601
+          name: client
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/kibana
+          name: data
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 1800
+  updateStrategy:
+    type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
