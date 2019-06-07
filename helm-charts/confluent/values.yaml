@@ -127,7 +127,7 @@ cp-kafka-rest:
 cp-kafka-connect:
   enabled: true
   image: reg-dhc-americas.app.corpintra.net/myanama/cp-kafka-connect
-  imageTag: 5.2.1
+  imageTag: 5.2.1-debezium
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
