@@ -1,5 +1,5 @@
 {
-  "name": "db-test-connector",
+  "name": "connector-dealer-db",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "tasks.max": "1",
@@ -9,7 +9,7 @@
     "database.user": "postgres",
     "database.password": "password",
     "database.dbname" : "postgres",
-    "database.server.name": "DB_TEST_SERVER",
+    "database.server.name": "dealer-db",
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable":"false",
