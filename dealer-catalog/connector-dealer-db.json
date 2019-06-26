@@ -9,7 +9,7 @@
     "database.user": "postgres",
     "database.password": "password",
     "database.dbname" : "postgres",
-    "database.server.name": "dealer-db",
+    "database.server.name": "dealerdb",
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable":"false",
