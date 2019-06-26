@@ -1,5 +1,41 @@
 CREATE SCHEMA events;
+
 SET search_path TO events;
+
+CREATE TABLE dlr_nafta
+(
+    id_dlr				character varying(10)  NOT NULL , 			
+	id_gssn_otlet		character varying(10)  NOT NULL , 
+	num_lgtd			character varying(20)  NULL , 
+	num_lttd			character varying(20)  NULL , 
+	ind_elite_amg		character varying(5)  NULL , 
+	nam_dlr				character varying(5)  NULL , 
+	num_dlr_tel			character varying(20)  NULL , 
+	num_dlr_fax			character varying(20)  NULL , 
+	adr_prim_line1		character varying(200)  NULL , 
+	adr_prim_line2		character varying(200)  NULL , 
+	adr_prim_city		character varying(50)  NULL , 
+	adr_prim_state		character varying(10)  NULL , 
+	adr_prim_compl_zip	character varying(10)  NULL , 
+	cde_dlr_rgn			character varying(10)  NULL , 
+	ind_dlr_maybach		character varying(10)  NULL , 
+	ind_pc_fran			character varying(10)  NULL , 
+	ind_fran_smrt		character varying(10)  NULL , 
+	id_ftl_dlr			character varying(10)  NULL , 
+	ind_sprn_fran		character varying(10)  NULL , 
+	adr_dlr_wbst_url	character varying(300)  NULL , 
+	ind_so_dlr			character varying(10)  NULL , 
+	ind_amg_perf_cntr	character varying(10)  NULL , 
+	ind_dlr_prmer_expr	character varying(10)  NULL , 
+	ind_zev_sta			character varying(10)  NULL , 
+	adr_dlr_sls_wsit_url character varying(300)  NULL, 
+	adr_dlr_serv_wsit_url character varying(300)  NULL , 
+	cde_dlr_ctry		character varying(300)  NULL ,
+	cde_lang_spkn_dlr_loc character varying(30)  NULL ,
+);
+
+ALTER TABLE dlr_nafta ADD CONSTRAINT MXDLRA PRIMARY KEY (id_dlr);
+
 
 INSERT INTO dlr_nafta (id_dlr, id_gssn_otlet, num_lgtd, num_lttd, ind_elite_amg, nam_dlr, num_dlr_tel, num_dlr_fax, adr_prim_line1, adr_prim_line2, adr_prim_city, adr_prim_state, adr_prim_compl_zip, cde_dlr_rgn, ind_dlr_maybach, ind_pc_fran, ind_fran_smrt, id_ftl_dlr, ind_sprn_fran, adr_dlr_wbst_url, ind_so_dlr, ind_amg_perf_cntr, ind_dlr_prmer_expr, ind_zev_sta, adr_dlr_sls_wsit_url, adr_dlr_serv_wsit_url, cde_dlr_ctry, cde_lang_spkn_dlr_loc) VALUES ('M01H7183', 'GS0056537', '-99.235764', '18.957195', 'F', 'Cever Cuernavaca, S.A. de C.V.', '777 482 1111', '777 482 1111', 'Paseo del Conquistador 203', 'Col. Maravillas', 'Cuernavaca', 'Morelos', '62230', 'N/A', 'F', 'T', 'T', NULL, 'F', 'http://www.mercedes-benzcuernavaca.com.mx/', 'F', 'F', 'F', 'F', 'http://www.mercedes-benzcuernavaca.com.mx/', 'http://www.mercedes-benzcuernavaca.com.mx/', 'mx', 'ES');
 INSERT INTO dlr_nafta (id_dlr, id_gssn_otlet, num_lgtd, num_lttd, ind_elite_amg, nam_dlr, num_dlr_tel, num_dlr_fax, adr_prim_line1, adr_prim_line2, adr_prim_city, adr_prim_state, adr_prim_compl_zip, cde_dlr_rgn, ind_dlr_maybach, ind_pc_fran, ind_fran_smrt, id_ftl_dlr, ind_sprn_fran, adr_dlr_wbst_url, ind_so_dlr, ind_amg_perf_cntr, ind_dlr_prmer_expr, ind_zev_sta, adr_dlr_sls_wsit_url, adr_dlr_serv_wsit_url, cde_dlr_ctry, cde_lang_spkn_dlr_loc) VALUES ('M01H7048', 'GS0016019', '-101.15947', '19.694397', 'F', 'Ravisa Haus S.A. de C.V.', '443 324 5001', '443 324 5001', 'Enrique Ramirez Miguel 110', 'Col. Chapultepec Oriente', 'Morelia', 'Michoacan', '58260', 'N/A', 'F', 'T', 'T', NULL, 'F', 'http://www.ravisahaus.com/', 'F', 'F', 'F', 'F', 'http://www.ravisahaus.com/', 'http://www.ravisahaus.com/', 'mx', 'ES');
