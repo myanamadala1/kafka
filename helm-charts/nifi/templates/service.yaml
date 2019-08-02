@@ -6,26 +6,30 @@ metadata:
   name: nifi
 spec:
   ports:
-  - name: ui
-    port: 8080
-    protocol: TCP
+  - port: 8080
+    name: ui
     targetPort: ui
-  - name: rest
-    port: 9090
     protocol: TCP
-    targetPort: rest
-  - name: api1
-    port: 9091
+  - port: 9001
+    name: dealers-push
+    targetPort: dealers-push
     protocol: TCP
-    targetPort: api1
-  - name: api2
-    port: 9092
+  - port: 9002
+    name: last-update
+    targetPort: last-update
     protocol: TCP
-    targetPort: api2
-  - name: api3
-    port: 9093
+  - port: 10001
+    name: dealers-pull
+    targetPort: dealers-pull
     protocol: TCP
-    targetPort: api3
+  - port: 10002
+    name: vehicles-pull
+    targetPort: vehicles-pull
+    protocol: TCP
+  - port: 10003
+    name: hybris-push
+    targetPort: hybris-push
+    protocol: TCP
   selector:
     app: nifi
   sessionAffinity: None

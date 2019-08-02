@@ -37,17 +37,20 @@ spec:
         - containerPort: 8080
           name: ui
           protocol: TCP
-        - containerPort: 9090
-          name: rest
+        - containerPort: 9001
+          name: dealers-push
           protocol: TCP
-        - containerPort: 9091
-          name: api1
+        - containerPort: 9002
+          name: last-update
           protocol: TCP
-        - containerPort: 9092
-          name: api2
+        - containerPort: 10001
+          name: dealers-pull
           protocol: TCP
-        - containerPort: 9093
-          name: api3
+        - containerPort: 10002
+          name: vehicles-pull
+          protocol: TCP
+        - containerPort: 10003
+          name: hybris-push
           protocol: TCP
         resources: {}
         volumeMounts:

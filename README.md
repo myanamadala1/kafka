@@ -30,7 +30,7 @@ helm --tiller-namespace pie --namespace pie install helm-charts/kibana --name ki
 kubectl config set-context --current --namespace=${K8S_NS}
 kubectl port-forward nifi-0 8080:8080
 
-# in a new terminal screen
+# in a new terminal
 response=$(curl -F template=@helm-charts/nifi/flows/pie.xml http://localhost:8080/nifi-api/process-groups/root/templates/upload -L -k)
 template=$(echo ${response}|sed -n 's:.*<id>\(.*\)</id>.*:\1:p')
 data="{ \"originX\": 0.0, \"originY\": 0.0, \"templateId\": \"${template}\" }"
