@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: reg-dhc-americas.app.corpintra.net/myanama/kibana-oss:6.6.1
+        image: docker.elastic.co/kibana/kibana-oss:6.6.1
         imagePullPolicy: IfNotPresent
         env:
         - name: ELASTICSEARCH_HOSTS

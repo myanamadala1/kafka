@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: zookeeper-client
-    image: reg-dhc-americas.app.corpintra.net/myanama/cp-zookeeper:5.0.1
+    image: confluentinc/cp-zookeeper:5.0.1
     command:
       - sh
       - -c

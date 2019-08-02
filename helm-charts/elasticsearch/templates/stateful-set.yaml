@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: elasticsearch
-        image: reg-dhc-americas.app.corpintra.net/myanama/elasticsearch-oss:6.6.1
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1
         imagePullPolicy: IfNotPresent
         env:
         - name: discovery.type

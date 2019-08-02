@@ -12,9 +12,9 @@ global:
 ## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
 ##
 image:
-  registry: reg-dhc-americas.app.corpintra.net
-  repository: myanama/postgres
-  tag: 10
+  registry: docker.io
+  repository: bitnami/postgresql
+  tag: 11.4.0-debian-9-r12
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images

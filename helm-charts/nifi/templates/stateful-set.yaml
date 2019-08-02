@@ -31,7 +31,7 @@ spec:
           value: "localhost"
         - name: NIFI_WEB_HTTP_PORT
           value: "8080"
-        image: reg-dhc-americas.app.corpintra.net/myanama/nifi:1.8.0
+        image: apache/nifi:1.8.0
         imagePullPolicy: IfNotPresent       
         ports:
         - containerPort: 8080
@@ -39,6 +39,15 @@ spec:
           protocol: TCP
         - containerPort: 9090
           name: rest
+          protocol: TCP
+        - containerPort: 9091
+          name: api1
+          protocol: TCP
+        - containerPort: 9092
+          name: api2
+          protocol: TCP
+        - containerPort: 9093
+          name: api3
           protocol: TCP
         resources: {}
         volumeMounts:

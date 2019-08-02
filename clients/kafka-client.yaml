@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: kafka-client
-    image: reg-dhc-americas.app.corpintra.net/myanama/cp-enterprise-kafka:5.2.1
+    image: confluentinc/cp-enterprise-kafka:5.2.1
     command:
       - sh
       - -c
